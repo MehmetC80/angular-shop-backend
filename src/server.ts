@@ -1,8 +1,9 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 dotenv.config();
-import { sample_foods, sample_tags } from './data';
+import { sample_foods, sample_tags, sample_users } from './data';
 
 dotenv.config();
 const app = express();
@@ -52,6 +53,33 @@ app.get('/api/foods/:foodId', (req, res) => {
   const food = sample_foods.find((food) => food.id == foodId);
   res.status(201).json(food);
 });
+
+app.post('/api/users/login', (req, res) => {
+  const body = req.body;
+
+  const user = sample_users.find(
+    (user) => user.email === body.email && user.password === body.password
+  );
+
+  if (user) {
+    res.status(201).json(generateTokenResponse(user));
+  } else {
+    res.status(400).send('User name or password is not valid!!!');
+  }
+});
+
+const generateTokenResponse = (user: any) => {
+  const token = jwt.sign(
+    { email: user.email, isAdmin: user.isAdmin },
+    'aSecreatKey',
+    {
+      expiresIn: '1d',
+    }
+  );
+
+  user.token = token;
+  return user;
+};
 
 app.listen(port, () => {
   console.log(`server ist running at http://localhost:${port}`);

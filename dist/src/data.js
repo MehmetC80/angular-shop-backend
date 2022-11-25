@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.sample_tags = exports.sample_foods = void 0;
+exports.sample_users = exports.sample_tags = exports.sample_foods = void 0;
 exports.sample_foods = [
     {
         id: '1',
@@ -78,5 +78,28 @@ exports.sample_tags = [
     { name: 'Hamburger', count: 1 },
     { name: 'Fry', count: 1 },
     { name: 'Soup', count: 1 },
+];
+exports.sample_users = [
+    {
+        name: 'memo',
+        email: 'memo@web.de',
+        password: '12345',
+        address: 'Berlin',
+        isAdmin: true
+    },
+    {
+        name: 'mehmet',
+        email: 'mehmet@web.de',
+        password: '12345',
+        address: 'Berlin',
+        isAdmin: true
+    },
+    {
+        name: 'john',
+        email: 'john@web.de',
+        password: '12345',
+        address: 'Berlin',
+        isAdmin: false
+    },
 ];
 //# sourceMappingURL=data.js.map

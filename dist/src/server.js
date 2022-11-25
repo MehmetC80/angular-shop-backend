@@ -6,6 +6,7 @@ exports.__esModule = true;
 var express_1 = __importDefault(require("express"));
 var cors_1 = __importDefault(require("cors"));
 var dotenv_1 = __importDefault(require("dotenv"));
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 dotenv_1["default"].config();
 var data_1 = require("./data");
 dotenv_1["default"].config();
@@ -44,6 +45,23 @@ app.get('/api/foods/:foodId', function (req, res) {
     var food = data_1.sample_foods.find(function (food) { return food.id == foodId; });
     res.status(201).json(food);
 });
+app.post('/api/users/login', function (req, res) {
+    var body = req.body;
+    var user = data_1.sample_users.find(function (user) { return user.email === body.email && user.password === body.password; });
+    if (user) {
+        res.status(201).json(generateTokenResponse(user));
+    }
+    else {
+        res.status(400).send('User name or password is not valid!!!');
+    }
+});
+var generateTokenResponse = function (user) {
+    var token = jsonwebtoken_1["default"].sign({ email: user.email, isAdmin: user.isAdmin }, 'aSecreatKey', {
+        expiresIn: '1d'
+    });
+    user.token = token;
+    return user;
+};
 app.listen(port, function () {
     console.log("server ist running at http://localhost:".concat(port));
 });
